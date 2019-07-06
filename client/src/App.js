@@ -11,17 +11,17 @@ class App extends React.Component {
         lat: 51.505,
         lng: -0.09,
       },
-      positionRadius: 5
+      positionRadius: 4000
     }
   }
 
-  componentDidMount() {
-    this.callApi(this.state.pinPosition, this.state.positionRadius)
-      .then(res => {
-        this.setState({ atmResults: res })
-      })
-      .catch(err => console.log(err));
-  }
+  // componentDidMount() {
+  //   this.callApi(this.state.pinPosition, this.state.positionRadius)
+  //     .then(res => {
+  //       this.setState({ atmResults: res })
+  //     })
+  //     .catch(err => console.log(err));
+  // }
 
   callApi = async (pinPosition, positionRadius) => {
     const response = await fetch("/api/atms/lat/" + pinPosition.lat + "/long/" + pinPosition.lng + "/radius/" + positionRadius)
@@ -30,7 +30,7 @@ class App extends React.Component {
   };
 
   updatePinPosition = newPosition => {
-    this.callApi(newPosition, 5)
+    this.callApi(newPosition, this.state.positionRadius)
       .then(res => {
         this.setState({ atmResults: res })
       })
@@ -38,10 +38,27 @@ class App extends React.Component {
     this.setState({ pinPosition: newPosition })
   }
 
+  updateRadius = evt => {
+    const newRadius = evt.target.value
+    console.log("radius " + newRadius)
+    this.callApi(this.state.pinPosition, newRadius)
+      .then(res => {
+        this.setState({ atmResults: res })
+      })
+      .catch(err => console.log(err));
+    this.setState({ positionRadius: newRadius })
+  }
+
   render() {
     return (
       <div className="App">
-        <AtmMap atmData={this.state.atmResults} pinPosition={this.state.pinPosition} updatePinPosition={this.updatePinPosition} />
+        <AtmMap
+          atmData={this.state.atmResults}
+          pinPosition={this.state.pinPosition}
+          positionRadius={this.state.positionRadius}
+          updatePinPosition={this.updatePinPosition}
+          updateRadius={this.updateRadius}
+        />
       </div>
     );
   }
