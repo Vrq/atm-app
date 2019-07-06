@@ -1,8 +1,14 @@
 import Leaflet from 'leaflet';
 import React, { createRef } from 'react';
 import { Circle, Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import consts from '../consts'
 
-Leaflet.Icon.Default.imagePath = '//cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/'
+Leaflet.Icon.Default.imagePath = consts.leafletDefaultIcon
+const pinIcon = Leaflet.icon({
+  iconUrl: 'https://img.icons8.com/office/80/000000/map-pin.png',
+  iconAnchor: [32, 65],
+  iconSize: [65, 65],
+});
 
 class AtmMap extends React.Component {
   userMapPinRef = createRef()
@@ -15,47 +21,27 @@ class AtmMap extends React.Component {
   }
 
   render() {
-    let position = [51.505, -0.085];
     const pinPosition = [this.props.pinPosition.lat, this.props.pinPosition.lng]
-
-    const maptilerTiles = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-    var greenIcon = Leaflet.icon({
-      iconUrl: 'https://img.icons8.com/office/80/000000/map-pin.png',
-      iconAnchor: [32, 65],
-      iconSize: [65, 65],
-    });
     return (
       <div id="map-container" className="text-center">
-
         <h2>Nearby ATM finder 🏧</h2>
         <h4>Drag the red pin to pick your position 📍 Use the slider to change the radius 🎚</h4>
-        <h4></h4>
         <div className="radius-input">
-          <input className="radius-input-slider" onChange={this.props.updateRadius} value={this.props.positionRadius} type="range" min="1" max="17500" step="10" />
+          <input className="radius-input-slider" onChange={this.props.updateRadius} value={this.props.positionRadius} type="range" min="2000" max="17500" step="1" />
           <div>Radius: {this.props.positionRadius} meters</div>
         </div>
-        <Map id="map-component" center={position} zoom={12}>
-          <TileLayer
-            attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-            url={maptilerTiles}
-          />
+        <Map id="map-component" center={pinPosition} zoom={12}>
+          <TileLayer attribution={consts.tileCredits} url={consts.osmTiles} />
           <Circle center={pinPosition} fillColor="blue" radius={this.props.positionRadius} />
-          <Marker
-            icon={greenIcon}
-            draggable={true}
-            onDragend={this.updatePosition}
-            position={pinPosition}
-            zIndexOffset={400}
-            ref={this.userMapPinRef}>
-          </Marker>
-          {this.props.atmData.data && this.props.atmData.data[0] && this.props.atmData.data[0].Brand[0].ATM.map(atmResult => {
-            const atmCords = atmResult.Location.PostalAddress.GeoLocation.GeographicCoordinates
-            let jobPosition = [atmCords.Latitude, atmCords.Longitude];
+          <Marker icon={pinIcon} draggable={true} onDragend={this.updatePosition} position={pinPosition} zIndexOffset={9000} ref={this.userMapPinRef} />
+          {this.props.atmResults.map(atmResult => {
+            const atmCoords = atmResult.Location.PostalAddress.GeoLocation.GeographicCoordinates
+            let atmPosition = [atmCoords.Latitude, atmCoords.Longitude];
 
-            return <Marker position={jobPosition}>
+            return <Marker position={atmPosition}>
               <Popup closeButton={false} maxWidth={500} >
                 <div>
-                  <h2>🏧 HSBC, {atmResult.Location.PostalAddress.StreetName}</h2>
+                  <h2>🏧 [HSBC] {atmResult.Location.PostalAddress.StreetName}</h2>
                 </div>
               </Popup>
             </Marker>
@@ -65,6 +51,5 @@ class AtmMap extends React.Component {
     )
   }
 }
-
 
 export default AtmMap

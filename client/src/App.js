@@ -1,27 +1,16 @@
-import React from 'react';
-import './App.css';
+import React from 'react'
 import AtmMap from './components/AtmMap'
+import consts from './consts'
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      atmResults: {},
-      pinPosition: {
-        lat: 51.505,
-        lng: -0.09,
-      },
-      positionRadius: 4000
+      atmResults: [],
+      pinPosition: consts.initialPosition,
+      positionRadius: consts.initialRadius
     }
   }
-
-  // componentDidMount() {
-  //   this.callApi(this.state.pinPosition, this.state.positionRadius)
-  //     .then(res => {
-  //       this.setState({ atmResults: res })
-  //     })
-  //     .catch(err => console.log(err));
-  // }
 
   callApi = async (pinPosition, positionRadius) => {
     const response = await fetch("/api/atms/lat/" + pinPosition.lat + "/long/" + pinPosition.lng + "/radius/" + positionRadius)
@@ -32,7 +21,7 @@ class App extends React.Component {
   updatePinPosition = newPosition => {
     this.callApi(newPosition, this.state.positionRadius)
       .then(res => {
-        this.setState({ atmResults: res })
+        this.setState({ atmResults: res.data[0].Brand[0].ATM })
       })
       .catch(err => console.log(err));
     this.setState({ pinPosition: newPosition })
@@ -40,10 +29,9 @@ class App extends React.Component {
 
   updateRadius = evt => {
     const newRadius = evt.target.value
-    console.log("radius " + newRadius)
     this.callApi(this.state.pinPosition, newRadius)
       .then(res => {
-        this.setState({ atmResults: res })
+        this.setState({ atmResults: res.data[0].Brand[0].ATM })
       })
       .catch(err => console.log(err));
     this.setState({ positionRadius: newRadius })
@@ -51,15 +39,15 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
+      <React.Fragment>
         <AtmMap
-          atmData={this.state.atmResults}
+          atmResults={this.state.atmResults}
           pinPosition={this.state.pinPosition}
           positionRadius={this.state.positionRadius}
           updatePinPosition={this.updatePinPosition}
           updateRadius={this.updateRadius}
         />
-      </div>
+      </React.Fragment>
     );
   }
 }

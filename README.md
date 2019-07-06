@@ -1,3 +1,19 @@
+## Few comments:
+- Server side code is easily extendable to use other APIs for ATM data, 
+however, the API contract is tight coupled to the HSBC API and needs to be made more generic
+- The max. radius is limited to 17500 km (10 miles) because of the limits of HSBC API;
+to get around it one could make multiple calls and combine the results, but that would 
+make the handling much more complicated
+
+---
+## Live version: https://atm-finder-app.herokuapp.com
+(might take 20s to load - Heroku Free Tier)
+
+---
+## Run locally: 
+1. Prerequisites: npm or yarn installed
+2. npm install && cd client && npm install && cd ..
+3. npm run dev
 
 
 
@@ -5,13 +21,8 @@
 
 
 
-
-
-
+--- 
 ## Below generated CRA Readme:
-
----------------------------------
-
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
