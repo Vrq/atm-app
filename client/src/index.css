@@ -22,3 +22,7 @@ body {
   .text-center {
     text-align: center;
   }
+
+  .unit-change-button {
+      margin: 5px;
+  }

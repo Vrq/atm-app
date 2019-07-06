@@ -8,7 +8,8 @@ class App extends React.Component {
     this.state = {
       atmResults: [],
       pinPosition: consts.initialPosition,
-      positionRadius: consts.initialRadius
+      positionRadius: consts.initialRadius,
+      unitType: consts.defaultUnitType
     }
   }
 
@@ -31,6 +32,18 @@ class App extends React.Component {
     this.setState({ atmResults: atmResponse.data[0].Brand[0].ATM })
   }
 
+  changeUnitType = newUnitType => {
+    this.setState({ unitType: newUnitType })
+  }
+
+  createRadiusUnitSpecificDisplay = (radiusInMeters, unitType) => {
+    if (unitType == "imperial") {
+      return (radiusInMeters / consts.metersInMile).toFixed(2) + " miles"
+    } else {
+      return radiusInMeters + " meters"
+    }
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -38,8 +51,10 @@ class App extends React.Component {
           atmResults={this.state.atmResults}
           pinPosition={this.state.pinPosition}
           positionRadius={this.state.positionRadius}
+          radiusDisplay={this.createRadiusUnitSpecificDisplay(this.state.positionRadius, this.state.unitType)}
           updatePinPosition={this.updatePinPosition}
           updateRadius={this.updateRadius}
+          changeUnitType={this.changeUnitType}
         />
       </React.Fragment>
     );

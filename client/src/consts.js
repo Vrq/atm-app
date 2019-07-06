@@ -6,7 +6,9 @@ const consts = {
     initialPosition: {
         lat: 51.505,
         lng: -0.09,
-    }
+    },
+    defaultUnitType: "metric",
+    metersInMile: 1609.34
 }
 
 export default consts

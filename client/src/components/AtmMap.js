@@ -28,7 +28,9 @@ class AtmMap extends React.Component {
         <h4>Drag the red pin to pick your position 📍 Use the slider to change the radius 🎚</h4>
         <div className="radius-input">
           <input className="radius-input-slider" onChange={this.props.updateRadius} value={this.props.positionRadius} type="range" min="2000" max="17500" step="1" />
-          <div>Radius: {this.props.positionRadius} meters</div>
+          <div>Radius: {this.props.radiusDisplay}</div>
+          <button onClick={()=> this.props.changeUnitType("metric")} className="unit-change-button">Use meters</button>
+          <button onClick={()=> this.props.changeUnitType("imperial")} className="unit-change-button">Use miles</button>
         </div>
         <Map id="map-component" center={pinPosition} zoom={12}>
           <TileLayer attribution={consts.tileCredits} url={consts.osmTiles} />

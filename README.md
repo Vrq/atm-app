@@ -4,7 +4,8 @@ however, the API contract is tight coupled to the HSBC API and needs to be made 
 - The max. radius is limited to 17500 km (10 miles) because of the limits of HSBC API;
 to get around it one could make multiple calls and combine the results, but that would 
 make the handling much more complicated
-
+- For the visual side: it's not pretty but it's easy to add a UI library, like MDB (Material Design with Bootstrap), to make it prettier
+  
 ---
 ## Live version: https://atm-finder-app.herokuapp.com
 (might take 20s to load - Heroku Free Tier)
