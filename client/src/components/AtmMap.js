@@ -22,7 +22,7 @@ class AtmMap extends React.Component {
     var greenIcon = Leaflet.icon({
       iconUrl: 'https://img.icons8.com/office/80/000000/map-pin.png',
       iconAnchor: [32, 65],
-      iconSize: [65, 65], 
+      iconSize: [65, 65],
     });
     return (
       <div id="map-container" className="text-center">
@@ -54,7 +54,9 @@ class AtmMap extends React.Component {
 
             return <Marker position={jobPosition}>
               <Popup closeButton={false} maxWidth={500} >
-                <div>{atmResult.Location.PostalAddress.StreetName}</div>
+                <div>
+                  <h2>🏧 HSBC, {atmResult.Location.PostalAddress.StreetName}</h2>
+                </div>
               </Popup>
             </Marker>
           })}
