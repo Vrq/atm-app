@@ -5,7 +5,8 @@ however, the API contract is tight coupled to the HSBC API and needs to be made 
 to get around it one could make multiple calls and combine the results, but that would 
 make the handling much more complicated
 - For the visual side: it's not pretty but it's easy to add a UI library, like MDB (Material Design with Bootstrap), to make it prettier
-  
+- Used Leaflet instead of Google Maps to be tile provider agnostic
+    
 ---
 ## Live version: https://atm-finder-app.herokuapp.com
 (might take up to 20s to load - Heroku Free Tier)
