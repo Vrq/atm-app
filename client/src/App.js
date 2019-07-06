@@ -13,28 +13,22 @@ class App extends React.Component {
   }
 
   callApi = async (pinPosition, positionRadius) => {
-    const response = await fetch("/api/atms/lat/" + pinPosition.lat + "/long/" + pinPosition.lng + "/radius/" + positionRadius)
-    const text = await response.text();
-    return JSON.parse(text);
+    const API_URI = "/api/atms/lat/" + pinPosition.lat + "/long/" + pinPosition.lng + "/radius/" + positionRadius
+    const response = await fetch(API_URI)
+    return await response.json();
   };
 
-  updatePinPosition = newPosition => {
-    this.callApi(newPosition, this.state.positionRadius)
-      .then(res => {
-        this.setState({ atmResults: res.data[0].Brand[0].ATM })
-      })
-      .catch(err => console.log(err));
+  updatePinPosition = async newPosition => {
     this.setState({ pinPosition: newPosition })
+    const atmResponse = await this.callApi(newPosition, this.state.positionRadius)
+    this.setState({ atmResults: atmResponse.data[0].Brand[0].ATM })
   }
 
-  updateRadius = evt => {
+  updateRadius = async evt => {
     const newRadius = evt.target.value
-    this.callApi(this.state.pinPosition, newRadius)
-      .then(res => {
-        this.setState({ atmResults: res.data[0].Brand[0].ATM })
-      })
-      .catch(err => console.log(err));
     this.setState({ positionRadius: newRadius })
+    const atmResponse = await this.callApi(this.state.pinPosition, newRadius)
+    this.setState({ atmResults: atmResponse.data[0].Brand[0].ATM })
   }
 
   render() {
