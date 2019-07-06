@@ -37,7 +37,7 @@ class App extends React.Component {
   }
 
   createRadiusUnitSpecificDisplay = (radiusInMeters, unitType) => {
-    if (unitType == "imperial") {
+    if (unitType === "imperial") {
       return (radiusInMeters / consts.metersInMile).toFixed(2) + " miles"
     } else {
       return radiusInMeters + " meters"

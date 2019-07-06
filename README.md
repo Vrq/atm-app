@@ -8,7 +8,7 @@ make the handling much more complicated
   
 ---
 ## Live version: https://atm-finder-app.herokuapp.com
-(might take 20s to load - Heroku Free Tier)
+(might take up to 20s to load - Heroku Free Tier)
 
 ---
 ## Run locally: 
